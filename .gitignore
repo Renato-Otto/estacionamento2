@@ -1,0 +1,309 @@
+
+package estacionamento;
+import javax.swing.*;
+
+public class Estacionamento{
+ static int ano;
+ static int mes;
+ static int dia;
+ static int hora;
+
+
+ static Vagas [] vagas = new Vagas[10];
+ static int cVagas = 0;
+ static Classificacao [] classificacao = new Classificacao[10];
+ static int cClassificacao = 0;
+ 
+ 
+ public static void tirarCarro(int pos){
+  int anoS = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Ano atual"));
+  int mesS = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Mes atual"));
+  int diaS = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Dia atual"));
+  int horaS = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com a Hora atual"));
+  switch (vagas[pos].getCodCli()){
+   case 1:
+    int hors = 1;
+    double total = 0;
+    if(vagas[pos].getAnoE()<anoS){
+     hors = hors + (8760*(anoS-vagas[pos].getAnoE()));
+    }
+    if(vagas[pos].getMesE()<mesS){
+     hors= hors +(720*(mesS-vagas[pos].getMesE()));
+    }
+    if(vagas[pos].getDiaE()<diaS){
+     hors = hors+(24*(diaS-vagas[pos].getDiaE()));
+    }
+    if(vagas[pos].getHoraE()<horaS){
+     hors = hors+(horaS-vagas[pos].getHoraE());
+    }
+    total = hors*0.3;
+    JOptionPane.showMessageDialog(null,"Código do Cliente :"+vagas[pos].getCodCli().getCodigo()+"\nNome: "+vagas[pos].getCodCli().getNome()+"\nPlaca: "+vagas[pos].getVec().getPlaca()+"\nEntrou: "+vagas[pos].getDiaE()+"/"+vagas[pos].getMesE()+"/"+vagas[pos].getAnoE()+" as "+vagas[pos].getHoraE()+"\nSaiu: "+diaS+"/"+mesS+"/"+anoS+" as "+horaS+"\nTotal a Pagar: R$ "+total+" reais");
+    
+    classificacao[cClassificacao] = new Classificacao();
+    classificacao[cClassificacao].setAnoE(vagas[pos].getAnoE());
+    classificacao[cClassificacao].setMesE(vagas[pos].getMesE());
+    classificacao[cClassificacao].setDiaE(vagas[pos].getDiaE());
+    classificacao[cClassificacao].setHoraE(vagas[pos].getHoraE());
+    classificacao[cClassificacao].setAnoS(anoS);
+    classificacao[cClassificacao].setMesS(mesS);
+    classificacao[cClassificacao].setDiaS(diaS);
+    classificacao[cClassificacao].setHoraS(horaS);
+    classificacao[cClassificacao].setCodigoCli(vagas[pos].getCodCli());
+    classificacao[cClassificacao].setPlaca(vagas[pos].getVec().getPlaca());
+    classificacao[cClassificacao].setPagamento(total);
+    
+    vagas[pos] = new Vagas();
+    break;
+   case 2:
+    JOptionPane.showMessageDialog(null,"Codigo do Cliente :"+vagas[pos].getCodCli().getCodigo()+"\nNome: "+vagas[pos].getCodCli().getNome()+"\nPlaca: "+vagas[pos].getVec().getPlaca()+"\nEntrou: "+vagas[pos].getDiaE()+"/"+vagas[pos].getMesE()+"/"+vagas[pos].getAnoE()+" as "+vagas[pos].getHoraE()+"\nSaiu: "+diaS+"/"+mesS+"/"+anoS+" as "+horaS+"\nTotal a Pagar: R$ 0 reais");
+    vagas[pos].getCodCli().setOcupada(false);
+    vagas[pos] = new Vagas();
+    break;
+   case 3:
+    JOptionPane.showMessageDialog(null,"Codigo do Cliente :"+vagas[pos].getCodCli().getCodigo()+"\nNome: "+vagas[pos].getCodCli().getNome()+"\nPlaca: "+vagas[pos].getVec().getPlaca()+"\nEntrou: "+vagas[pos].getDiaE()+"/"+vagas[pos].getMesE()+"/"+vagas[pos].getAnoE()+" as "+vagas[pos].getHoraE()+"\nSaiu: "+diaS+"/"+mesS+"/"+anoS+" as "+horaS+"\nTotal a Pagar: R$ 0 reais");
+    classificacao[cClassificacao]= new Classificacao();
+    classificacao[cClassificacao].setAnoE(vagas[pos].getAnoE());
+    classificacao[cClassificacao].setMesE(vagas[pos].getMesE());
+    classificacao[cClassificacao].setDiaE(vagas[pos].getDiaE());
+    classificacao[cClassificacao].setHoraE(vagas[pos].getHoraE());
+    classificacao[cClassificacao].setAnoS(anoS);
+    classificacao[cClassificacao].setMesS(mesS);
+    classificacao[cClassificacao].setDiaS(diaS);
+    classificacao[cClassificacao].setHoraS(horaS);
+    classificacao[cClassificacao].setCodigoCli(vagas[pos].getCodCli());
+    classificacao[cClassificacao].setPlaca(vagas[pos].getVec().getPlaca());
+    
+    int hs = 1;
+    double tota = 0;
+    if(vagas[pos].getAnoE()<anoS){
+     hs = hs+(8760*(anoS-vagas[pos].getAnoE()));
+    }
+    if(vagas[pos].getMesE()<mesS){
+     hs = hs +(720*(mesS-vagas[pos].getMesE()));
+    }
+    if(vagas[pos].getDiaE()<diaS){
+     hs = hs+(24*(diaS-vagas[pos].getDiaE()));
+    }
+    if(vagas[pos].getHoraE()<horaS){
+     hs = hs+(horaS-vagas[pos].getHoraE());
+    }
+    tota=hs*0.15;
+    classificacao[cClassificacao].setPagamento(tota);
+    cClassificacao++;
+    vagas[pos] = new Vagas();
+    break;
+  }
+  ano = anoS;
+  mes = mesS;
+  dia = diaS;
+  hora = horaS;
+ }
+ public static void gerarCupom(int cliente,int carro){
+  ano = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Ano Atual"));
+  mes = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Mes Atual"));
+  dia = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Dia Atual"));
+  hora = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com a Hora Atual"));
+  
+  JOptionPane.showMessageDialog(null,"Codigo de Cliente :"+clientes[cliente].getCodigo()+"\nNome: "+clientes[cliente].getNome()+"\nPlaca: "+clientes[cliente].getCodCli(carro).getPlaca()+"\n Entrou: "+dia+"/"+mes+"/"+ano+" as "+hora);
+  
+  int pos = 0;
+  boolean achou = false;
+  for(int c = 0;c<cVagas;c++){
+   if(vagas[c].getLivre()==true){
+    achou = true;
+    pos = c;
+    break;
+   }
+  }
+  if(achou = true){
+   vagas[pos] = new Vagas();
+   vagas[pos].setAnoE(ano);
+   vagas[pos].setMesE(mes);
+   vagas[pos].setDiaE(dia);
+   vagas[pos].setHoraE(hora);
+   vagas[pos].setVec(clientes[cliente].getCodCli(carro));
+   vagas[pos].setCodCli(clientes[cliente]);
+   vagas[pos].setLivre(false);
+  }else{
+   vagas[cVagas] = new Vagas();
+   vagas[cVagas].setAnoE(ano);
+   vagas[cVagas].setMesE(mes);
+   vagas[cVagas].setDiaE(dia);
+   vagas[cVagas].setVec(clientes[cliente].getCodCli(carro));
+   vagas[cVagas].setCodCli(clientes[cliente]);
+   vagas[cVagas].setLivre(false); 
+  }
+  cVagas++;
+ }
+ public static void exibirCartaoM(int x,int dias){
+  String placas= "";
+  for(int z = 0;z<clientes[x].getQTV();z++){
+   placas = placas+"  \n"+clientes[x].getCodCli(z).getPlaca();
+  }
+  JOptionPane.showMessageDialog(null,"Numero do Cartão do Cliente Mensalista: "+clientes[x].getCodigo()+"\nNome: "+clientes[x].getNome()+"\nValor a Pagar referente ao mes: R$ "+(clientes[x].getMensalidade()*dias/30)+" Reais\nValor da Mensalidade: R$"+clientes[x].getMensalidade()+" Reais\n Referente ao mes "+mes+" de "+ano+"\n cliente com as seguintes placas:"+placas);
+ }
+ public static double calcularMensalidade(int tipo){
+  return tipo*2*30;
+ }
+ public static void adicionarVeiculo(int x){
+  Veiculos vec = new Veiculos();
+  vec.setCodPro(clientes[x].getCodigo());
+  vec.setNome(JOptionPane.showInputDialog(null,"Marca do Veiculo"));
+  vec.setPlaca(JOptionPane.showInputDialog(null,"Placa do Veiculo"));
+  vec.setTipo(Integer.parseInt(JOptionPane.showInputDialog(null,"Porte do Veiculo:\n1: Pequeno\n2: Medio\n3: Grande\n4: Especial")));
+  clientes[x].setCodCli(vec);
+ 
+ }
+ public static void main(String[]args){
+  ano = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Ano atual"));
+  mes = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Mes atual"));
+  dia = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com o Dia atual"));
+  hora = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com a Hora atual"));
+  
+  while(true){
+   int opcao = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira:\n1: Cadastrar Usuario\n2: Estacionar Carro\n3: Retirar carro do Estacionamento\n4: Visualizar \n0: Sair"));
+   
+   switch (opcao){
+    case 1:
+     clientes[cClientes] = new Cliente();
+     clientes[cClientes].setCodigo(Integer.parseInt(JOptionPane.showInputDialog(null,"Digite o Codigo do Cliente")));
+     clientes[cClientes].setNome(JOptionPane.showInputDialog(null,"Digite  o Nome do Cliente"));
+     clientes[cClientes].setRG(JOptionPane.showInputDialog(null,"Digite o RG do Cliente"));
+     clientes[cClientes].setCPF(JOptionPane.showInputDialog(null,"Digite o CPF do Cliente"));
+     clientes[cClientes].setTelefone(JOptionPane.showInputDialog(null,"Digite o Telefone"));
+     int tipo = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira:\n1: Cliente temporario\n2: Cliente Mensalista\n3: Cliente Conveniado"));
+     switch (tipo){
+      case 2:
+       clientes[cClientes].setTipoCli(2);
+       boolean cada = false;
+       while(cada==false){
+        if(Integer.parseInt(JOptionPane.showInputDialog(null,"Digite:\n1: Cadastrar um novo Veiculo do Cliente Mensalista\n2: Continuar"))==1){
+         adicionarVeiculo(cClientes);
+        }else{
+         cada= true;
+        }
+       }
+       int maiorCategoria = 0;
+       for(int y = 0;y<clientes[cClientes].getQTV();y++){
+        Veiculos ve = new Veiculos();
+        ve = clientes[cClientes].getCodCli(y);
+        if(maiorCategoria<ve.getTipo()){
+         maiorCategoria = ve.getTipo();
+        }
+       }
+       clientes[cClientes].setMensalidade(calcularMensalidade(maiorCategoria));
+       int dias= Integer.parseInt(JOptionPane.showInputDialog(null,"Insira o Numero de dias Para acabar o Mes"));
+       exibirCartaoM(cClientes,dias);
+       break;
+      case 3:
+       clientes[cClientes].setTipoCli(3);
+       adicionarVeiculo(cClientes);
+       break;
+      default:
+       clientes[cClientes].setTipoCli(1);
+       adicionarVeiculo(cClientes);
+       break;
+     }
+     cClientes++;
+     break;
+    case 2:
+     if(cVagas>=vagas.length){
+      JOptionPane.showMessageDialog(null,"Estacionamento Cheio");
+     }else{
+      int codigo = Integer.parseInt(JOptionPane.showInputDialog(null,"Entre com  o codigo do cliente"));
+      int pos = 1999;
+      for(int c = 0;c<cClientes;c++){
+       if(codigo==clientes[c].getCodigo()){
+        pos = c;
+        break;
+       }
+      }
+      if(pos==1999){
+       JOptionPane.showMessageDialog(null,"Não foi Possivel Localizar este Cliente");
+      }else{
+       String placa = JOptionPane.showInputDialog(null,"Insira a Placa do Veiculo a ser adicionado");
+       int posV = 1999;
+       for(int c = 0;c<clientes[pos].getQTV();c++){
+        if(placa.equalsIgnoreCase(clientes[pos].getCodCli(pos).getPlaca())){
+         posV = c;
+         break;
+        }
+       }
+       if(posV==1999){
+        JOptionPane.showMessageDialog(null,"Placa Não encontrada");
+       }else{
+        if(clientes[pos].getTipoCli()==2){
+         if(clientes[pos].getOcupada()==true){
+          JOptionPane.showMessageDialog(null,"Vaga do Cliente Mensalista");
+         }else{
+          gerarCupom(pos,posV); 
+         }
+        }else{
+         gerarCupom(pos,posV);
+        }
+       } 
+      }
+     }
+     break;
+    case 3:
+     String placa = JOptionPane.showInputDialog(null,"Digite  a Placa do Carro a ser Buscada");
+     int pos = 1999;
+     boolean achou = false;
+     for(int z=0;z<cVagas;z++){
+      if(vagas[z].getVec().getPlaca().equalsIgnoreCase(placa)){
+       pos = z;
+       achou = true;
+       break;
+      }
+     }
+     if(achou==false){
+      JOptionPane.showMessageDialog(null,"Placa Não Encontrada");
+     }else{
+      JOptionPane.showMessageDialog(null,"Placa encontrada na Vaga: "+pos);
+      tirarCarro(pos);
+     }
+     break;
+     
+    case 5:
+     int op = Integer.parseInt(JOptionPane.showInputDialog(null,"Insira:\n1:Lucro de Clientes Temporarios\n2: Lucro de Clientes Mensalistas\n3: Lucro de Clientes Conveniados"));
+     switch (op){
+      case 1:
+       double totalm = 0;
+       for(int d2 = 0;d2<cClassificacao;d2++){
+        if(classificacao[d2].getCodigoCli().getTipoCli()==1){
+         totalm = totalm+classificacao[d2].getPagamento();
+        }
+       }
+       JOptionPane.showMessageDialog(null,"Total de Clientes Temporarios:\nR$ "+totalm+" Reais");
+       break;
+      case 2:
+       double totale = 0;
+       for(int d1 = 0;d1<cClientes;d1++){
+        if(clientes[d1].getTipoCli()==2){
+         totale = totale+clientes[d1].getMensalidade();
+        }
+       }
+       JOptionPane.showMessageDialog(null,"Total de Clientes Mensalistas:\nR$ "+totale+" Reais");
+       break;
+      case 3:
+       double totalms = 0;
+       for(int d2 = 0;d2<cClassificacao;d2++){
+        if(classificacao[d2].getCodigoCli().getTipoCli()==3){
+         totalms = totalms+classificacao[d2].getPagamento();
+        }
+       }
+       JOptionPane.showMessageDialog(null,"Total de Clientes Conveniados:\nR$ "+totalms+" Reais");
+       break;
+     }
+     break;
+    case 0:
+     System.exit(0);
+     break;
+    default:
+     JOptionPane.showMessageDialog(null,"Opção Invalida");
+     break;
+   }
+  }
+  
+ }
+}
